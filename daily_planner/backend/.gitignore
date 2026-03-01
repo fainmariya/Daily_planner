@@ -58,3 +58,17 @@ node_modules
 dist
 .env
 src_old
+.env.local
+.env.development
+backend/.env
+client/.env
+
+backend/uploads/
+pgdata/
+
+backend/node_modules/.prisma/
+backend/node_modules/@prisma/client/
+backend/src/generated/
+
+.vscode/
+.idea/

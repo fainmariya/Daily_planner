@@ -8,13 +8,11 @@ export class ServicesService {
   constructor(private readonly prisma: PrismaService) {}
 
   async list() {
-    const rows = await this.prisma.client.service.findMany({
+    return this.prisma.client.service.findMany({
       orderBy: { id: "asc" },
+      // можно явно выбрать нужные поля (полезно, если появятся лишние)
+      select: { id: true, name: true, durationMin: true },
     });
-
-    return rows.map((e) => ({
-      ...e,
-      id: e.id.toString?.() ?? e.id, // <-- ключевой фикс
-    }));
+  
   }
 }

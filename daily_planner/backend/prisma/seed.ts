@@ -1,6 +1,8 @@
 import "dotenv/config";
 import { PrismaPg } from "@prisma/adapter-pg";
-import { PrismaClient } from "../src/generated/prisma/index.js";
+
+import { PrismaClient } from "@prisma/client";
+
 
 const adapter = new PrismaPg({
   connectionString: process.env.DATABASE_URL!,
@@ -9,28 +11,33 @@ const adapter = new PrismaPg({
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  await prisma.employee.upsert({
-    where: { name: "employe_1" },
-    update: {},
-    create: { name: "employe_1" },
-  });
+  const employees = ["employe_1", "employe_2", "employe_3"];
 
-  const services = [
-    "Наращивание",
-    "Уход",
-    "Сложное окрашивание",
-    "Выпрямление",
-    "Стрижка",
-    "Укладка",
-    "Тонирование",
-    "Окрашивание волос",
-  ];
-
-  for (const name of services) {
-    await prisma.service.upsert({
+  for (const name of employees) {
+    await prisma.employee.upsert({
       where: { name },
       update: {},
       create: { name },
+    });
+  }
+
+  // durationMin — примерные значения, потом подгонишь под реальные процедуры
+  const services: Array<{ name: string; durationMin: number }> = [
+    { name: "Наращивание", durationMin: 180 },
+    { name: "Уход", durationMin: 60 },
+    { name: "Сложное окрашивание", durationMin: 240 },
+    { name: "Выпрямление", durationMin: 180 },
+    { name: "Стрижка", durationMin: 60 },
+    { name: "Укладка", durationMin: 45 },
+    { name: "Тонирование", durationMin: 60 },
+    { name: "Окрашивание волос", durationMin: 60 },
+  ];
+
+  for (const s of services) {
+    await prisma.service.upsert({
+      where: { name: s.name },
+      update: { durationMin: s.durationMin },
+      create: { name: s.name, durationMin: s.durationMin },
     });
   }
 }

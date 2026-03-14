@@ -31,6 +31,8 @@ model Employee {
   name      String   @unique
   displayName String?
   avatarUrl   String?
+  birthDate DateTime?
+  showInPlanner Boolean @default(true)
   createdAt DateTime @default(now())
 
   appointments Appointment[]
